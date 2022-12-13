@@ -56,7 +56,7 @@ namespace MathMonteCarlo.ViewModel
             GeneratorTester.Test();
 
             //Test weights
-            Weighed.Test();
+            WeighedRandom.Test();
 
             //Run opdracht 1
             for (int i = 1; i <= 3; i++)
@@ -69,7 +69,7 @@ namespace MathMonteCarlo.ViewModel
             }
 
             //Poisson test
-            Poisson.Test();
+            PoissonMath.Test();
         }
 
         public static void Log(string title, string content)

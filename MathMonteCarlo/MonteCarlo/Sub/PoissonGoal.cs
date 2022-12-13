@@ -25,7 +25,6 @@ namespace MathMonteCarlo.MonteCarlo.Model
             //Get all our odds
             List<ClubGoalOdds> allGoalOdds = new PoulesDataCollection()
                                                 .AllGoalOdds();
-
             //Get goal odds for HOME and AWAY
             var goalOddsHome = allGoalOdds
                     .First(go => go.Club == Combi.Home);
@@ -42,9 +41,9 @@ namespace MathMonteCarlo.MonteCarlo.Model
             //Calculate home score average
             var __otherAverage = (goalOddsAway.AS + goalOddsHome.HC) / 2;
 
-            //Use Poisson distrubution function to calculate random goal variables
-            var GOALS_HOME = Poisson.GetPoisson(__homeAverage);
-            var GOALS_OTHER = Poisson.GetPoisson(__otherAverage);
+            //Use Poisson distribution function to calculate random goal variables
+            var GOALS_HOME = PoissonMath.GetPoisson(__homeAverage);
+            var GOALS_OTHER = PoissonMath.GetPoisson(__otherAverage);
 
             //Return result
             if (GOALS_HOME == GOALS_OTHER)

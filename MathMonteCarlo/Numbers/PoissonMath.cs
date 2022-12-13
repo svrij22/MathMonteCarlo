@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace MathMonteCarlo.Numbers
 {
-    internal class Poisson
+    internal class PoissonMath
     {
 
-        public static Generator RandomNumberGen = new Generator(DateTime.Now.Millisecond);
+        public static NumberGenerator RandomNumberGen = new NumberGenerator(DateTime.Now.Millisecond);
 
         /// <summary>
         /// Poisson method
@@ -35,10 +35,23 @@ namespace MathMonteCarlo.Numbers
         {
             MCViewModel.Log("Poisson tester", "Running 100 poisson random numbers gens around lambda 3.5");
             MCViewModel.Log("Poisson tester", "--------");
-            for (int i = 0; i < 100; i++)
+
+            Dictionary<int, int> poissonDict = new Dictionary<int, int>();
+
+            for (int i = 0; i < 1000; i++)
             {
-                var poisson = GetPoisson(3.5);
+                var poisson = GetPoisson(10);
+                
+                if (!poissonDict.ContainsKey(poisson)) poissonDict.Add(poisson, 0);
+                poissonDict[poisson]++;
+
                 MCViewModel.Log("Poisson tester", poisson.ToString());
+            }
+            MCViewModel.Log("Poisson tester", "--------");
+
+            foreach (var item in poissonDict.OrderBy(i => i.Key))
+            {
+                MCViewModel.Log("Poisson tester", $"value {item.Key} : {item.Value} times");
             }
         }
     }

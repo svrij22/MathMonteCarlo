@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MathMonteCarlo.Numbers
 {
-    internal class Weighed
+    internal class WeighedRandom
     {
         /// <summary>
         /// Weighed random static function
@@ -16,8 +16,8 @@ namespace MathMonteCarlo.Numbers
         /// <param name="weighs"></param>
         /// <returns></returns>
         
-        public static Generator generator = new Generator(DateTime.Now.Millisecond);
-        public static int WeighedRandom(int[] weighs)
+        public static NumberGenerator generator = new NumberGenerator(DateTime.Now.Millisecond);
+        public static int GetInt(int[] weighs)
         {
             //Get rand and sum
             double rand = generator.NextDouble();
@@ -27,28 +27,26 @@ namespace MathMonteCarlo.Numbers
             double[] wFractions = weighs.Select(x => x / sum)
                 .ToArray();
 
-            //Set bounds
-            double leftBound = 0;
-            double rightBound = wFractions[0];
-
             //For each fraction
             for (int i = 0; i < wFractions.Length; i++)
             {
+                //Update bounds
+                double leftBound = wFractions.Take(i).Sum();
+                double rightBound = wFractions.Take(i + 1).Sum();
+
                 //In bound? return int
                 if (rand >= leftBound && rand <= rightBound)
                     return i;
-
-                //Update bounds
-                leftBound += wFractions[i];
-                rightBound += wFractions[i + 1];
             }
 
             return -1;
         }
 
-        public static T WeighedRandom<T>(int[] weighs) where T : Enum
+        public static T GetEnum<T>(int[] weighs) where T : Enum
         {
-            return (T)(object)WeighedRandom(weighs);
+            var intv = GetInt(weighs);
+            var value = (T)(object)intv;
+            return value;
         }
 
         public static void Test()
@@ -65,7 +63,7 @@ namespace MathMonteCarlo.Numbers
             for (int i = 0; i < 10000; i++)
             {
                 //add to result
-                res.Add(WeighedRandom(weighs));
+                res.Add(GetInt(weighs));
             }
 
             MCViewModel.Log("Weighed Random Tests", "amount of '50' : " + res.Count(r => r == 0));

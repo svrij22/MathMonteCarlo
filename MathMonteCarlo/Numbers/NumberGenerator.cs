@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace MathMonteCarlo.Numbers
 {
-    internal class Generator
+    internal class NumberGenerator
     {
         public double A;
         public double C;
         public double M;
 
         public double Current;
-        public Generator(int seed)
+        public NumberGenerator(int seed)
         {
             seed += 442312341;
             A = (seed / 10); 
@@ -48,7 +48,7 @@ namespace MathMonteCarlo.Numbers
             MCViewModel.Log("Number Generator Tests", "Average should be .5");
             MCViewModel.Log("Number Generator Tests", "Amount of items in 1000 should be around 500");
 
-            Generator gen = new Generator(DateTime.Now.Millisecond);
+            NumberGenerator gen = new NumberGenerator(DateTime.Now.Millisecond);
 
             MCViewModel.Log("Number Generator Tests", $"Generator uses current millisecond as seed");
             MCViewModel.Log("Number Generator Tests", $"For seed : {DateTime.Now.Millisecond}");

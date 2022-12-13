@@ -19,7 +19,24 @@ namespace MathMonteCarlo.MonteCarlo
     {
         Loss = 0,
         Draw = 1,
-        Win = 3
+        Win = 2,
+    }
+
+    public static class SoccerResultHelper
+    {
+        public static int ToPoints(SoccerResult result, bool flip)
+        {
+            switch (result)
+            {
+                case SoccerResult.Loss:
+                    return flip ? 3 : 0;
+                case SoccerResult.Draw:
+                    return 1;
+                case SoccerResult.Win:
+                    return flip ? 0 : 3;
+            }
+            return -1;
+        }
     }
 
     internal class ClubCombination
@@ -97,3 +114,4 @@ namespace MathMonteCarlo.MonteCarlo
         }
     }
 }
+

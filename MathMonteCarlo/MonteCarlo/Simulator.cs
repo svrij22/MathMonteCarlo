@@ -27,13 +27,15 @@ namespace MathMonteCarlo.MonteCarlo
         /// <param name="logName"></param>
         public static void RunOpdracht1(string logName)
         {
+            //Runs the simulation with as delegate the WeighedRandom function
             RunSimulation(logName,
                 (combi) =>
                 {
                     //Use our weighed randomizer to draw out a result
-                    return Weighed.WeighedRandom<SoccerResult>(new[] { combi.Loss,
+                    var enumValue = WeighedRandom.GetEnum<SoccerResult>(new[] { combi.Loss,
                                                                 combi.Draw,
                                                                 combi.Win});
+                    return enumValue;
                 });
         }
 
@@ -43,6 +45,7 @@ namespace MathMonteCarlo.MonteCarlo
         /// <param name="runIndex"></param>
         public static void RunOpdracht2(string runIndex)
         {
+            //Runs the simulation with as delegate the PoissonGoal Calculate() function
             RunSimulation(runIndex,
                 (combi) =>
                 {
@@ -52,7 +55,7 @@ namespace MathMonteCarlo.MonteCarlo
         }
 
         public static void RunSimulation(string runIndex,
-                                         Func<ClubCombination, SoccerResult> lambdaGetResult,
+                                         Func<ClubCombination, SoccerResult> calculatePointsDelegate,
                                          int amountOfSimulations = 250)
         {
             //Returns a list of all club combinations and W/D/L Ratios.
@@ -60,59 +63,60 @@ namespace MathMonteCarlo.MonteCarlo
 
             //Creates a global list of club results used for calculating percentages.
             Dictionary<Club, List<Position>> ClubResults = new();
-            for (int i = 0; i < 5; i++) // Initialize list.
+            
+            // Initialize list.
+            for (int i = 0; i < 5; i++) 
                 ClubResults.Add((Club)i, new());
 
 
-            //Run X simulations
+            //Log
             MCViewModel.Log($"Individual Game Results ({runIndex})", $"Running {amountOfSimulations} game simulations");
+
+            //Run X simulations
             for (int t = 0; t < amountOfSimulations; t++)
             {
 
                 //Create a temporary list of results for Points
                 Dictionary<Club, int> pointResults = new();
-                for (int i = 0; i < 5; i++) // Initialize
+
+                //Initialize list.
+                for (int i = 0; i < 5; i++) 
                     pointResults.Add((Club)i, 0);
 
                 //'Play' the games
                 foreach (var combi in allCombinations)
                 {
-                    
                     //Get the result with a lambda method
-                    var result = lambdaGetResult(combi);
+                    var result = calculatePointsDelegate(combi);
 
                     //Add result to both clubs
-                    pointResults[combi.Home] += (int)result;
-
-                    //win = 0, draw = 1, loss = 3, for opposing team
-                    if (result != SoccerResult.Win)
-                        pointResults[combi.Away] += (result == SoccerResult.Loss) ? 3 : 1;
+                    pointResults[combi.Home] += SoccerResultHelper.ToPoints(result, false);
+                    pointResults[combi.Away] += SoccerResultHelper.ToPoints(result, true);
                 }
 
-                //LOG
+                //Log block
                 MCViewModel.Log($"Individual Game Results ({runIndex})", $"-------------");
                 foreach (var club in pointResults.OrderBy(b => -b.Value))
                     MCViewModel.Log($"Individual Game Results ({runIndex})", $"{club.Key} has {club.Value} points.");
                 
                 //Order by points
                 var ordered = pointResults
-                                .OrderBy(b => -b.Value)
-                                .Select(kv => kv.Key)
-                                .ToList();
+                                .OrderBy(b => -b.Value) // order by value = amount of points.
+                                .Select(kv => kv.Key) // get the keys = club names.
+                                .ToList(); // turn into list.
 
                 //Add to results
                 for (int i = 0; i < ordered.Count; i++)
                 {
-                    //Get our club
-                    var club = ordered[i];
-
+                    var club = ordered[i]; //Get our club
                     //Cast our index to club position e.g. 0 = First, 1 = Second.
                     ClubResults[club].Add((Position)i);
                 }
             }
 
-            //lambda func to calculate perctage string
-            Func<List<Position>, Position, double> GetPerc = (positions, matchingPos) =>
+            //lambda func to calculate percentage of certain position in list of position string
+            // e.g. 23x times Position.First in List<Position> with 100 Positions will return 23%
+            Func<List<Position>, Position, double> CalculatePercentageOfPositions = (positions, matchingPos) =>
             {
                 float total = positions.Count;
                 float matches = positions.Count(p => p == matchingPos);
@@ -123,11 +127,11 @@ namespace MathMonteCarlo.MonteCarlo
             MCViewModel.Log($"Total Game Results ({runIndex})", $"-------------");
             foreach (var club in ClubResults)
                 MCViewModel.Log($"Total Game Results ({runIndex})", $"{club.Key} : " +
-                    $" 1st - {GetPerc(club.Value, Position.First)} % " +
-                    $" 2nd - {GetPerc(club.Value, Position.Second)} % " +
-                    $" 3rd - {GetPerc(club.Value, Position.Third)} % " +
-                    $" 4rd - {GetPerc(club.Value, Position.Fourth)} % " +
-                    $" 5th - {GetPerc(club.Value, Position.Fifth)} % ");
+                    $" 1st - {CalculatePercentageOfPositions(club.Value, Position.First)} % " +
+                    $" 2nd - {CalculatePercentageOfPositions(club.Value, Position.Second)} % " +
+                    $" 3rd - {CalculatePercentageOfPositions(club.Value, Position.Third)} % " +
+                    $" 4rd - {CalculatePercentageOfPositions(club.Value, Position.Fourth)} % " +
+                    $" 5th - {CalculatePercentageOfPositions(club.Value, Position.Fifth)} % ");
         }
     }
 }

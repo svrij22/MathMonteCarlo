@@ -11,6 +11,12 @@ namespace MathMonteCarlo.Numbers
     {
 
         public static Generator RandomNumberGen = new Generator(DateTime.Now.Millisecond);
+
+        /// <summary>
+        /// Poisson method
+        /// </summary>
+        /// <param name="lambda"></param>
+        /// <returns></returns>
         public static int GetPoisson(double lambda)
         {
             // Algorithm due to Donald Knuth, 1969.

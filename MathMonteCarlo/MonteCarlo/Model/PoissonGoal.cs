@@ -15,6 +15,10 @@ namespace MathMonteCarlo.MonteCarlo.Model
             Combi = comb;
         }
 
+        /// <summary>
+        /// PoissonGoal class for calculating using the average goal odds and Poisson method.
+        /// </summary>
+        /// <returns></returns>
         public SoccerResult Calculate()
         {
 

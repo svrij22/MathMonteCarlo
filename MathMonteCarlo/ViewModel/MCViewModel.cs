@@ -61,11 +61,11 @@ namespace MathMonteCarlo.ViewModel
             //Run opdracht 1
             for (int i = 1; i <= 3; i++)
             {
-                Opdracht1.Run(i.ToString());
+                Simulator.RunOpdracht1(i.ToString() + " - Opdr.1");
             }
             for (int i = 1; i <= 3; i++)
             {
-                Opdracht2.Run(i.ToString());
+                Simulator.RunOpdracht2(i.ToString() + " - Opdr.2");
             }
 
             //Poisson test

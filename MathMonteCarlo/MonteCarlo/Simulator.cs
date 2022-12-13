@@ -1,4 +1,5 @@
-﻿using MathMonteCarlo.Numbers;
+﻿using MathMonteCarlo.MonteCarlo.Model;
+using MathMonteCarlo.Numbers;
 using MathMonteCarlo.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -6,13 +7,53 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static MathMonteCarlo.MonteCarlo.Opdracht1;
 
 namespace MathMonteCarlo.MonteCarlo
 {
-    internal class Opdracht2
+    public enum Position
     {
-        public static void Run(string time)
+        First,
+        Second,
+        Third,
+        Fourth,
+        Fifth
+    }
+    internal class Simulator
+    {
+
+        /// <summary>
+        /// Run opdracht 1
+        /// </summary>
+        /// <param name="logName"></param>
+        public static void RunOpdracht1(string logName)
+        {
+            RunSimulation(logName,
+                (combi) =>
+                {
+
+                    return Weighed.WeighedRandom<SoccerResult>(new[] { combi.Loss,
+                                                                combi.Draw,
+                                                                combi.Win});
+                });
+        }
+
+        /// <summary>
+        /// Run opdracht 2
+        /// </summary>
+        /// <param name="runIndex"></param>
+        public static void RunOpdracht2(string runIndex)
+        {
+            RunSimulation(runIndex,
+                (combi) =>
+                {
+
+                    return new PoissonGoal(combi).Calculate();
+                });
+        }
+
+        public static void RunSimulation(string runIndex,
+            Func<ClubCombination, SoccerResult> lambdaGetResult,
+            int amountOfSimulations = 250)
         {
             //Get all ratios
             List<ClubCombination> allRatios = new PoulesDataCollection().GetAllCombinations();
@@ -24,9 +65,8 @@ namespace MathMonteCarlo.MonteCarlo
 
 
             //Run 100 simulations
-            int simulations = 100;
-            MCViewModel.Log($"Individual Game Results ({time})", $"Running 100 game simulations");
-            for (int t = 0; t < simulations; t++)
+            MCViewModel.Log($"Individual Game Results ({runIndex})", $"Running {amountOfSimulations} game simulations");
+            for (int t = 0; t < amountOfSimulations; t++)
             {
 
                 //Create a temporary list of results
@@ -35,24 +75,22 @@ namespace MathMonteCarlo.MonteCarlo
                     pointResults.Add((Club)i, 0);
 
                 // 'Play' the games
-                foreach (var ratio in allRatios)
+                foreach (var combi in allRatios)
                 {
                     //Use our weighed randomizer to draw out a result
-                    var result = Weighed.WeighedRandom<SoccerResult>(new[] { ratio.Loss,
-                                                                ratio.Draw,
-                                                                ratio.Win});
+                    var result = lambdaGetResult(combi);
 
                     //Add result to both clubs
-                    pointResults[ratio.Home] += (int)result;
+                    pointResults[combi.Home] += (int)result;
                     //win = 0, draw = 1, loss = 3, for opposing team
                     if (result != SoccerResult.Win)
-                        pointResults[ratio.Away] += (result == SoccerResult.Loss) ? 3 : 1;
+                        pointResults[combi.Away] += (result == SoccerResult.Loss) ? 3 : 1;
                 }
 
                 //Test
-                MCViewModel.Log($"Individual Game Results ({time})", $"-------------");
+                MCViewModel.Log($"Individual Game Results ({runIndex})", $"-------------");
                 foreach (var club in pointResults.OrderBy(b => -b.Value))
-                    MCViewModel.Log($"Individual Game Results ({time})", $"{club.Key} has {club.Value} points.");
+                    MCViewModel.Log($"Individual Game Results ({runIndex})", $"{club.Key} has {club.Value} points.");
 
                 //Order
                 var ordered = pointResults
@@ -77,9 +115,9 @@ namespace MathMonteCarlo.MonteCarlo
             };
 
             //Test
-            MCViewModel.Log($"Total Game Results ({time})", $"-------------");
+            MCViewModel.Log($"Total Game Results ({runIndex})", $"-------------");
             foreach (var club in ClubResults)
-                MCViewModel.Log($"Total Game Results ({time})", $"{club.Key} : " +
+                MCViewModel.Log($"Total Game Results ({runIndex})", $"{club.Key} : " +
                     $" 1st - {GetPerc(club.Value, Position.First)} % " +
                     $" 2nd - {GetPerc(club.Value, Position.Second)} % " +
                     $" 3rd - {GetPerc(club.Value, Position.Third)} % " +

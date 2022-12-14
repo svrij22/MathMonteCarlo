@@ -16,7 +16,7 @@ namespace MathMonteCarlo.Numbers
         /// <param name="weighs"></param>
         /// <returns></returns>
         
-        public static NumberGenerator generator = new NumberGenerator(DateTime.Now.Millisecond);
+        public static CongruentualNumberGenerator generator = new CongruentualNumberGenerator();
         public static int GetInt(int[] weighs)
         {
             //Get rand and sum

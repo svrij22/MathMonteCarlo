@@ -10,7 +10,7 @@ namespace MathMonteCarlo.Numbers
     internal class PoissonMath
     {
 
-        public static NumberGenerator RandomNumberGen = new NumberGenerator(DateTime.Now.Millisecond);
+        public static CongruentualNumberGenerator RandomNumberGen = new CongruentualNumberGenerator();
 
         /// <summary>
         /// Poisson method

@@ -53,10 +53,13 @@ namespace MathMonteCarlo.ViewModel
         public void Run()
         {
             //Test number generator
-            GeneratorTester.Test();
+            GeneratorTester.TestCongruentual();
+            GeneratorTester.TestMidSquare();
+            GeneratorTester.TestBuiltIn();
 
             //Test weights
             WeighedRandom.Test();
+
 
             //Run opdracht 1
             for (int i = 1; i <= 3; i++)

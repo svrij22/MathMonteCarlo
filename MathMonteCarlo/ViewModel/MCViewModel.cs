@@ -56,6 +56,7 @@ namespace MathMonteCarlo.ViewModel
             GeneratorTester.TestCongruentual();
             GeneratorTester.TestMidSquare();
             GeneratorTester.TestBuiltIn();
+            GeneratorTester.TestLagFib();
 
             //Test weights
             WeighedRandom.Test();

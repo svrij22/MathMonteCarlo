@@ -16,7 +16,7 @@ namespace MathMonteCarlo.Numbers
         public double Current;
         public CongruentualNumberGenerator(long seed = 0)
         {
-            if (seed == 0) seed = SeedFromDateTime(seed);
+            if (seed == 0) seed = LongSeedFromDateTime();
             A = (seed / 10); 
             C = 5 + (seed / 10); 
             M = seed;

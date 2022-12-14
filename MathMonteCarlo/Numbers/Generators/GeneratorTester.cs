@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace MathMonteCarlo.Numbers
@@ -25,20 +26,26 @@ namespace MathMonteCarlo.Numbers
         {
             Test<BuiltInRandomNumberGenerator>(new BuiltInRandomNumberGenerator());
         }
+        public static void TestLagFib()
+        {
+            Test<LagFibNumberGenerator>(new LagFibNumberGenerator());
+        }
 
         public static void Test<T>(NumberGenerator numberGenerator)
         {
             MCViewModel.Log($"Number Generator Tests T={typeof(T)}", "Running tests for class type " + typeof(T));
+            Stopwatch stopwatch = new();
+            stopwatch.Start();
 
             // Number of tests to run
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 10; i++)
             {
 
                 //results
                 List<double> results = new();
 
                 //Generate
-                int amountOfNumbers = 2500;
+                int amountOfNumbers = 2000;
                 for (int j = 0; j < amountOfNumbers; j++)
                 {
                     var number = numberGenerator.NextDouble();
@@ -61,6 +68,10 @@ namespace MathMonteCarlo.Numbers
                 MCViewModel.Log($"Number Generator Tests T={typeof(T)}", $"Variance : {Math.Round(Variance(results), 2)}");
                 MCViewModel.Log($"Number Generator Tests T={typeof(T)}", $"StdDev : {Math.Round(StdDev(results), 2)}");
             }
+
+            stopwatch.Stop();
+            MCViewModel.Log($"Number Generator Tests T={typeof(T)}", "------------");
+            MCViewModel.Log($"Number Generator Tests T={typeof(T)}", $"Generating numbers took {stopwatch.Elapsed.TotalMilliseconds} milliseconds.");
         }
 
         private static double Frequency(List<double> values)

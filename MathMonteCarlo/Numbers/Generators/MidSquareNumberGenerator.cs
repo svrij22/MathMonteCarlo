@@ -12,7 +12,7 @@ namespace MathMonteCarlo.Numbers
         public BigInteger Key = 0;
         public MidSquareNumberGenerator(long seed = 0)
         {
-            if (seed == 0) seed = SeedFromDateTime(seed);
+            if (seed == 0) seed = LongSeedFromDateTime();
 
             //Set key
             Key = seed;

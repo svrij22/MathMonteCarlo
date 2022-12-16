@@ -28,9 +28,11 @@ namespace MathMonteCarlo.MonteCarlo.Model
 
         public List<Club> OrderedClubResults()
         {
+            //WEIGHS = (100 * points) + goals for more difference between shared places
+
             //Order by points
             var ordered = PointResults
-                            .OrderBy(b => -b.Value) // order by value = amount of points.
+                            .OrderBy(b => -(b.Value * 100) - TotalGoals[b.Key]) // order by value = amount of points * 100 + amt of goals.
                             .Select(kv => kv.Key) // get the keys = club names.
                             .ToList(); // turn into list.
             return ordered;

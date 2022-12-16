@@ -21,15 +21,20 @@ namespace MathMonteCarlo.MonteCarlo
     internal class Simulator
     {
 
+
+        public string DEBUG_name = "";
+        public Simulator(string simName = "test")
+        {
+            //Set print name
+            DEBUG_name = simName;
+        }
         /// <summary>
         /// Run opdracht 1
         /// </summary>
-        /// <param name="logName"></param>
-        public static void RunOpdracht1(string logName)
+        public void RunOpdracht1()
         {
             //Runs the simulation with as delegate the WeighedRandom function
-            RunSimulation(logName,
-                (combi) =>
+            Run((combi) =>
                 {
                     //Use our weighed randomizer to draw out a result
                     var enumValue = WeighedRandom.GetEnum<SoccerResult>(new[] { (double)combi.Loss,
@@ -42,77 +47,76 @@ namespace MathMonteCarlo.MonteCarlo
         /// <summary>
         /// Run opdracht 2
         /// </summary>
-        /// <param name="runIndex"></param>
-        public static void RunOpdracht2(string runIndex)
+        public void RunOpdracht2()
         {
             //Runs the simulation with as delegate the PoissonGoal Calculate() function
-            RunSimulation(runIndex,
-                (combi) =>
+            Run((combi) =>
                 {
                     //Use our PoissonGoal class and pass our combination to draw out a random result
                     return PoissonGoalExt.Calculate(combi);
                 });
         }
 
-        public static void RunSimulation(string runIndex,
-                                         Func<ClubCombination, SoccerResult> calculatePointsDelegate,
-                                         int amountOfSimulations = 250)
+        public List<Poule> PlayedPoules = new();
+
+        /// <summary>
+        /// Run simulation
+        /// </summary>
+        /// <param name="calculatePointsDelegate"></param>
+        /// <param name="amountOfSimulations"></param>
+        public void Run(Func<ClubCombination, SoccerResult> calculatePointsDelegate,
+                        int amountOfSimulations = 250)
         {
-            //Returns a list of all club combinations and W/D/L Ratios.
-            List<ClubCombination> allCombinations = new PoulesDataCollection().GetAllCombinations();
-
-            //Creates a global list of club results used for calculating percentages.
-            Dictionary<Club, List<Position>> ClubResults = new();
-            
-            // Initialize list.
-            for (int i = 0; i < 5; i++) 
-                ClubResults.Add((Club)i, new());
-
-
-            //Log
-            MCViewModel.Log($"Individual Game Results ({runIndex})", $"Running {amountOfSimulations} game simulations");
-
             //Run X simulations
             for (int t = 0; t < amountOfSimulations; t++)
             {
+                //Create poule and play
+                Poule poule = new Poule();
 
-                //Create a temporary list of results for Points
-                Dictionary<Club, int> pointResults = new();
+                poule.Play(calculatePointsDelegate);
 
-                //Initialize list.
-                for (int i = 0; i < 5; i++) 
-                    pointResults.Add((Club)i, 0);
+                PlayedPoules.Add(poule);
+            }
+        }
 
-                //'Play' the games
-                foreach (var combi in allCombinations)
-                {
-                    //Get the result with a lambda method
-                    var result = calculatePointsDelegate(combi);
+        //Creates a global list of club results used for calculating percentages.
+        Dictionary<Club, List<Position>> ClubResults = new();
 
-                    //Add result to both clubs
-                    pointResults[combi.Home] += SoccerResultHelper.ToPoints(result, false);
-                    pointResults[combi.Away] += SoccerResultHelper.ToPoints(result, true);
-                }
+        /// <summary>
+        /// Method to calculate statistics
+        /// </summary>
+        public void CalculateStatistics()
+        {
+            // Initialize list.
+            for (int i = 0; i < 5; i++)
+                ClubResults.Add((Club)i, new());
 
-                //Log block
-                MCViewModel.Log($"Individual Game Results ({runIndex})", $"-------------");
-                foreach (var club in pointResults.OrderBy(b => -b.Value))
-                    MCViewModel.Log($"Individual Game Results ({runIndex})", $"{club.Key} has {club.Value} points.");
-                
-                //Order by points
-                var ordered = pointResults
-                                .OrderBy(b => -b.Value) // order by value = amount of points.
-                                .Select(kv => kv.Key) // get the keys = club names.
-                                .ToList(); // turn into list.
+            //For each poule
+            foreach (var poule in PlayedPoules)
+            {
+
+                //Get ordered results
+                var orderedResults = poule.OrderedClubResults();
 
                 //Add to results
-                for (int i = 0; i < ordered.Count; i++)
+                for (int i = 0; i < orderedResults.Count; i++)
                 {
-                    var club = ordered[i]; //Get our club
+                    //Get our club
+                    var club = orderedResults[i];
+
                     //Cast our index to club position e.g. 0 = First, 1 = Second.
                     ClubResults[club].Add((Position)i);
                 }
             }
+        }
+
+        public void PrintStatistics(int amountOfSimulations = 250)
+        {
+            //Log
+            MCViewModel.Log($"Individual Game Results ({DEBUG_name})", $"Ran {amountOfSimulations} game simulations");
+
+            //Log individual results
+
 
             //lambda func to calculate percentage of certain position in list of position string
             // e.g. 23x times Position.First in List<Position> with 100 Positions will return 23%
@@ -124,9 +128,9 @@ namespace MathMonteCarlo.MonteCarlo
             };
 
             //LOG
-            MCViewModel.Log($"Total Game Results ({runIndex})", $"-------------");
+            MCViewModel.Log($"Total Game Results ({DEBUG_name})", $"-------------");
             foreach (var club in ClubResults)
-                MCViewModel.Log($"Total Game Results ({runIndex})", $"{club.Key} : " +
+                MCViewModel.Log($"Total Game Results ({DEBUG_name})", $"{club.Key} : " +
                     $" 1st - {CalculatePercentageOfPositions(club.Value, Position.First)} % " +
                     $" 2nd - {CalculatePercentageOfPositions(club.Value, Position.Second)} % " +
                     $" 3rd - {CalculatePercentageOfPositions(club.Value, Position.Third)} % " +

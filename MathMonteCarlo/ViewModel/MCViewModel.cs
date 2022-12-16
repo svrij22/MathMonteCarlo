@@ -65,11 +65,17 @@ namespace MathMonteCarlo.ViewModel
             //Run opdracht 1
             for (int i = 1; i <= 3; i++)
             {
-                Simulator.RunOpdracht1(i.ToString() + " - Opdr.1");
+                Simulator sim = new Simulator(i.ToString() + " - Opdr.1");
+                sim.RunOpdracht1();
+                sim.CalculateStatistics();
+                sim.PrintStatistics();
             }
             for (int i = 1; i <= 3; i++)
             {
-                Simulator.RunOpdracht2(i.ToString() + " - Opdr.2");
+                Simulator sim = new Simulator(i.ToString() + " - Opdr.2");
+                sim.RunOpdracht2();
+                sim.CalculateStatistics();
+                sim.PrintStatistics();
             }
 
             //Poisson test

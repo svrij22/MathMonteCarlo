@@ -54,7 +54,7 @@ namespace MathMonteCarlo.Numbers
                 odds.Add(poisson(i));
             }
 
-            //weighed randomizer
+            //weighed randomizer ( to make up for the few %% we're missing at the top)
             var res = WeighedRandom.GetInt(odds.ToArray());
 
             return res;

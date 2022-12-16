@@ -32,9 +32,9 @@ namespace MathMonteCarlo.MonteCarlo
                 (combi) =>
                 {
                     //Use our weighed randomizer to draw out a result
-                    var enumValue = WeighedRandom.GetEnum<SoccerResult>(new[] { combi.Loss,
-                                                                combi.Draw,
-                                                                combi.Win});
+                    var enumValue = WeighedRandom.GetEnum<SoccerResult>(new[] { (double)combi.Loss,
+                                                                (double)combi.Draw,
+                                                                (double)combi.Win});
                     return enumValue;
                 });
         }

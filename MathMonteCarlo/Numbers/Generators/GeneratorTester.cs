@@ -74,6 +74,13 @@ namespace MathMonteCarlo.Numbers
             MCViewModel.Log($"Number Generator Tests T={typeof(T)}", $"Generating numbers took {stopwatch.Elapsed.TotalMilliseconds} milliseconds.");
         }
 
+
+        /// <summary>
+        /// TODO, Freq test aanpassen -> gebruik seed ipv ushort gebaseerd op double.
+        /// Nieuw item in abstracte klasse
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
         private static double Frequency(List<double> values)
         {
             var freq = 0.0d;

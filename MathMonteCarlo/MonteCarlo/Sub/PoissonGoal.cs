@@ -42,8 +42,8 @@ namespace MathMonteCarlo.MonteCarlo.Model
             var __otherAverage = (goalOddsAway.AS + goalOddsHome.HC) / 2;
 
             //Use Poisson distribution function to calculate random goal variables
-            var GOALS_HOME = PoissonMath.GetPoisson(__homeAverage);
-            var GOALS_OTHER = PoissonMath.GetPoisson(__otherAverage);
+            var GOALS_HOME = PoissonMath.GetPoissionCustom(__homeAverage);
+            var GOALS_OTHER = PoissonMath.GetPoissionCustom(__otherAverage);
 
             //Return result
             if (GOALS_HOME == GOALS_OTHER)

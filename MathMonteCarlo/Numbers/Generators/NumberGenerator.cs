@@ -10,7 +10,7 @@ namespace MathMonteCarlo.Numbers
         }
         public int IntSeedFromDateTime()
         {
-            return int.Parse($"{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Month}{DateTime.Now.Second}{DateTime.Now.Millisecond}");
+            return int.Parse($"{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}{DateTime.Now.Millisecond}");
         }
 
         public abstract double NextDouble();

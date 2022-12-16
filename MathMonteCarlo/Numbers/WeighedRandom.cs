@@ -17,7 +17,7 @@ namespace MathMonteCarlo.Numbers
         /// <returns></returns>
         
         public static CongruentualNumberGenerator generator = new CongruentualNumberGenerator();
-        public static int GetInt(int[] weighs)
+        public static int GetInt(double[] weighs)
         {
             //Get rand and sum
             double rand = generator.NextDouble();
@@ -42,7 +42,7 @@ namespace MathMonteCarlo.Numbers
             return -1;
         }
 
-        public static T GetEnum<T>(int[] weighs) where T : Enum
+        public static T GetEnum<T>(double[] weighs) where T : Enum
         {
             var intv = GetInt(weighs);
             var value = (T)(object)intv;
@@ -56,14 +56,14 @@ namespace MathMonteCarlo.Numbers
             MCViewModel.Log("Weighed Random Tests", "Amount of items in 10000 should be around 5000, 3000, 1500 and 500");
 
             //Set weighs
-            int[] weighs = new int[] { 50, 30, 15, 5 };
+            double[] weighs = new double[] { 50, 30, 15, 5 };
             List<int> res = new List<int>();
 
             //Run sim
             for (int i = 0; i < 10000; i++)
             {
                 //add to result
-                res.Add(GetInt(weighs));
+                res.Add(GetInt(weighs.ToArray()));
             }
 
             MCViewModel.Log("Weighed Random Tests", "amount of '50' : " + res.Count(r => r == 0));

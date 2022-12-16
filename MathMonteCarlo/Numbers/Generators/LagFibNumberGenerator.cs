@@ -44,6 +44,11 @@ namespace MathMonteCarlo.Numbers
                 vals.Add(lCurr);
             } // init
 
+            // burn 1000 values away
+            for (int ct = 0; ct < 1000; ++ct)
+            {
+                double dummy = NextDouble();
+            }
         }
         public override double NextDouble()
         {

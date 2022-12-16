@@ -50,7 +50,7 @@ namespace MathMonteCarlo.MonteCarlo
                 (combi) =>
                 {
                     //Use our PoissonGoal class and pass our combination to draw out a random result
-                    return new PoissonGoalExt.Calculate(combi);
+                    return PoissonGoalExt.Calculate(combi);
                 });
         }
 

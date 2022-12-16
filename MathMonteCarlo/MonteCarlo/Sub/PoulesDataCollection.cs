@@ -39,7 +39,7 @@ namespace MathMonteCarlo.MonteCarlo
         }
     }
 
-    internal class ClubCombination
+    public class ClubCombination
     {
         public Club Home { get; set; }
         public Club Away { get; set; }

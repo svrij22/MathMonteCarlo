@@ -56,13 +56,17 @@ namespace MathMonteCarlo.ViewModel
         {
             //Test
             MersenneTwisterGenerator mtg = new();
-            mtg.y1();
+            for (int i = 0; i < 1000; i++)
+            {
+                mtg.genran();
+            }
 
             //Test number generator
             GeneratorTester.TestCongruentual();
             GeneratorTester.TestMidSquare();
             GeneratorTester.TestBuiltIn();
             GeneratorTester.TestLagFib();
+            GeneratorTester.TestMersTwist();
 
             //Test weights
             WeighedRandom.Test();

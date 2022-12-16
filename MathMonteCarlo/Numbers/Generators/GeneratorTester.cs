@@ -1,4 +1,5 @@
-﻿using MathMonteCarlo.ViewModel;
+﻿using MathMonteCarlo.Numbers.Generators;
+using MathMonteCarlo.ViewModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,6 +30,10 @@ namespace MathMonteCarlo.Numbers
         public static void TestLagFib()
         {
             Test<LagFibNumberGenerator>(new LagFibNumberGenerator());
+        }
+        public static void TestMersTwist()
+        {
+            Test<MersenneTwisterGenerator>(new MersenneTwisterGenerator());
         }
 
         public static void Test<T>(NumberGenerator numberGenerator)

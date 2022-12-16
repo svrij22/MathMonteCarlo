@@ -64,6 +64,9 @@ namespace MathMonteCarlo.Numbers.Generators
             int threeBytes2 = (byte)(base_x2 & _secondMask);
             //Debug.WriteLine(Convert.ToString(threeBytes2, toBase: 2));
 
+
+            //TWIST ? Ik snap de slides niet
+
             var xnew = base_x3 ^ (firstByte1 + threeBytes2);
             return xnew;
         }

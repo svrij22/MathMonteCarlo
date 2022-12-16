@@ -10,13 +10,13 @@ namespace MathMonteCarlo.Numbers.Generators
     //Kijk in slides
     internal class MersenneTwisterGenerator : NumberGenerator
     {
-        public int u = 1;
+        public int u = 3;
         public int s = 2;
         public int t = 3;
         public int l = 2;
 
-        public int b = 0b_1010_0110_1011_0110;
-        public int c = 0b_0011_0101_0001_1000;
+        public int b = 0b_1011_0110_1011_0110;
+        public int c = 0b_0011_0111_0001_1000;
 
         public int bits = 16;
 
@@ -39,20 +39,19 @@ namespace MathMonteCarlo.Numbers.Generators
         {
             //generate y and new x
             var y1 = calcy(x[0]);
-            var x6 =  calcx(x[0],  x[1], x[2]);
+            var x6 = calcx(x[0],  x[1], x[2]);
 
             //push to list
             x.Add(x6);
             x = x.Skip(1).ToList();
 
-            //write y
-            Debug.WriteLine(y1);
+            //return
             return y1;
         }
 
         public override double NextDouble()
         {
-            return (genran() / mod);
+            return (genran() / (double)mod);
         }
 
         public int calcx(int base_x1, int base_x2, int base_x3)

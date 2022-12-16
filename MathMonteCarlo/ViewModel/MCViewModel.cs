@@ -54,12 +54,6 @@ namespace MathMonteCarlo.ViewModel
 
         public void Run()
         {
-            //Test
-            MersenneTwisterGenerator mtg = new();
-            for (int i = 0; i < 1000; i++)
-            {
-                mtg.genran();
-            }
 
             //Test number generator
             GeneratorTester.TestCongruentual();

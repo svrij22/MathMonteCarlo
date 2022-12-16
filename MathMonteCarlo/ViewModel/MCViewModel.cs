@@ -1,4 +1,5 @@
 ﻿using MathMonteCarlo.MonteCarlo;
+using MathMonteCarlo.MonteCarlo.Model;
 using MathMonteCarlo.Numbers;
 using System;
 using System.Collections.Generic;
@@ -66,14 +67,14 @@ namespace MathMonteCarlo.ViewModel
             for (int i = 1; i <= 3; i++)
             {
                 Simulator sim = new Simulator(i.ToString() + " - Opdr.1");
-                sim.RunOpdracht1();
+                sim.Run<PouleWithOdds>();
                 sim.CalculateStatistics();
                 sim.PrintStatistics();
             }
             for (int i = 1; i <= 3; i++)
             {
                 Simulator sim = new Simulator(i.ToString() + " - Opdr.2");
-                sim.RunOpdracht2();
+                sim.Run<PouleWithPoisson>();
                 sim.CalculateStatistics();
                 sim.PrintStatistics();
             }

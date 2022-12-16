@@ -28,53 +28,25 @@ namespace MathMonteCarlo.MonteCarlo
             //Set print name
             DEBUG_name = simName;
         }
-        /// <summary>
-        /// Run opdracht 1
-        /// </summary>
-        public void RunOpdracht1()
-        {
-            //Runs the simulation with as delegate the WeighedRandom function
-            Run((combi) =>
-                {
-                    //Use our weighed randomizer to draw out a result
-                    var enumValue = WeighedRandom.GetEnum<SoccerResult>(new[] { (double)combi.Loss,
-                                                                (double)combi.Draw,
-                                                                (double)combi.Win});
-                    return enumValue;
-                });
-        }
-
-        /// <summary>
-        /// Run opdracht 2
-        /// </summary>
-        public void RunOpdracht2()
-        {
-            //Runs the simulation with as delegate the PoissonGoal Calculate() function
-            Run((combi) =>
-                {
-                    //Use our PoissonGoal class and pass our combination to draw out a random result
-                    return PoissonGoalExt.Calculate(combi);
-                });
-        }
 
         public List<Poule> PlayedPoules = new();
 
         /// <summary>
         /// Run simulation
         /// </summary>
-        /// <param name="calculatePointsDelegate"></param>
         /// <param name="amountOfSimulations"></param>
-        public void Run(Func<ClubCombination, SoccerResult> calculatePointsDelegate,
-                        int amountOfSimulations = 250)
+        public void Run<T>(int amountOfSimulations = 250) where T : Poule
         {
             //Run X simulations
             for (int t = 0; t < amountOfSimulations; t++)
             {
-                //Create poule and play
-                Poule poule = new Poule();
+                //Create poule and play / Activator pattern
+                T poule = (T)Activator.CreateInstance(typeof(T));
 
-                poule.Play(calculatePointsDelegate);
+                //Play game
+                poule.Play();
 
+                //Add to played poules
                 PlayedPoules.Add(poule);
             }
         }
@@ -88,13 +60,13 @@ namespace MathMonteCarlo.MonteCarlo
         public void CalculateStatistics()
         {
             // Initialize list.
+            ClubResults = new();
             for (int i = 0; i < 5; i++)
                 ClubResults.Add((Club)i, new());
 
             //For each poule
             foreach (var poule in PlayedPoules)
             {
-
                 //Get ordered results
                 var orderedResults = poule.OrderedClubResults();
 
@@ -110,6 +82,10 @@ namespace MathMonteCarlo.MonteCarlo
             }
         }
 
+        /// <summary>
+        /// Printing for UI
+        /// </summary>
+        /// <param name="amountOfSimulations"></param>
         public void PrintStatistics(int amountOfSimulations = 250)
         {
             //Log

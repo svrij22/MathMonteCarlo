@@ -21,13 +21,14 @@ namespace MathMonteCarlo.Numbers.Generators
         public int bits = 16;
 
         public int mod;
-
         public MersenneTwisterGenerator()
         {
             mod = (int)Math.Pow(2, bits);
         }
 
-        public List<int> x = new()
+        public int n = 5; //amount of items
+
+        public List<int> MT = new()
         {
             0b_1101_0101_1111_1111,
             0b_0111_1011_0110_0110,
@@ -38,12 +39,7 @@ namespace MathMonteCarlo.Numbers.Generators
         public int genran()
         {
             //generate y and new x
-            var y1 = calcy(x[0]);
-            var x6 = calcx(x[0],  x[1], x[2]);
-
-            //push to list
-            x.Add(x6);
-            x = x.Skip(1).ToList();
+            var y1 = extract_number();
 
             //return
             return y1;
@@ -51,46 +47,65 @@ namespace MathMonteCarlo.Numbers.Generators
 
         public override double NextDouble()
         {
+            // mod = max integer size
+
             return (genran() / (double)mod);
         }
 
-        public int calcx(int base_x1, int base_x2, int base_x3)
+        public int index = 0;
+        public int extract_number()
         {
-            int _firstMask = mod/2;
-            byte firstByte1 = (byte)(base_x1 & _firstMask);
-            //Debug.WriteLine(Convert.ToString(firstByte1, toBase: 2));
+            if (index >= n-1)
+            {
+                twist();
+            }
 
-            int _secondMask = (mod/2) - 1;
-            int threeBytes2 = (byte)(base_x2 & _secondMask);
-            //Debug.WriteLine(Convert.ToString(threeBytes2, toBase: 2));
+            int _y = MT[index];
 
-
-            //TWIST ? Ik snap de slides niet
-
-            var xnew = base_x3 ^ (firstByte1 + threeBytes2);
-            return xnew;
-        }
-        public int calcy(int _base)
-        {
-            int _y = _base;
+            //bitwise shifting for extracted number
 
             _y = _y ^ (_y >> u);
             _y = _y % mod;
-            //Debug.WriteLine(Convert.ToString(_y, toBase: 2));
 
             _y = _y ^ ((_y << s) & b);
             _y = _y % mod;
-            //Debug.WriteLine(Convert.ToString(_y, toBase: 2));
 
             _y = _y ^ ((_y << t) & c);
             _y = _y % mod;
-            //Debug.WriteLine(Convert.ToString(_y, toBase: 2));
 
             _y = _y ^ (_y >> l);
             _y = _y % mod;
-            //Debug.WriteLine(Convert.ToString(_y, toBase: 2));
+
+            index++;
 
             return _y;
+        }
+
+        uint a = 0x9908B0DF;
+
+        uint lower_mask = 0x7FFFFFFF;
+        uint upper_mask = 0x80000000;
+
+        int m = 397;
+        public void twist()
+        {
+            //for each mt number
+            for (int i = 0; i < n; i++)
+            {
+                //new x
+                var x = (MT[i] & upper_mask) + MT[(i + 1) % n] & lower_mask;
+
+                //shift
+                var xA = x >> 1;
+
+                //if its uneven
+                if ((x % 2) != 0)
+                    xA = xA ^ a;
+
+                //set
+                MT[i] = (int)(MT[(i + m) % n] ^ xA);
+            }
+            index = 0;
         }
     }
 }

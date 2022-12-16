@@ -37,7 +37,6 @@ namespace MathMonteCarlo.MonteCarlo.Model
                 TotalGoals[combi.Home] += goalsHome;
                 TotalGoals[combi.Home] += goalsOther;
 
-
                 //Add result to both clubs
                 PointResults[combi.Home] += SoccerResultHelper.ToPoints(gameResult, false);
                 PointResults[combi.Away] += SoccerResultHelper.ToPoints(gameResult, true);

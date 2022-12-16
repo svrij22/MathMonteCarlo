@@ -1,6 +1,7 @@
 ﻿using MathMonteCarlo.MonteCarlo;
 using MathMonteCarlo.MonteCarlo.Model;
 using MathMonteCarlo.Numbers;
+using MathMonteCarlo.Numbers.Generators;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -53,6 +54,10 @@ namespace MathMonteCarlo.ViewModel
 
         public void Run()
         {
+            //Test
+            MersenneTwisterGenerator mtg = new();
+            mtg.y1();
+
             //Test number generator
             GeneratorTester.TestCongruentual();
             GeneratorTester.TestMidSquare();

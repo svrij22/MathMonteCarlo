@@ -11,6 +11,7 @@ namespace MathMonteCarlo.Numbers
     {
         // Lehmer initialization constants
         private const int a = 48271;  // 
+        private const int q = 44488;  // m / a
         private const int r = 3399;  // m % a
 
         private const int k = 10; // largest "-index"
@@ -25,21 +26,24 @@ namespace MathMonteCarlo.Numbers
             if (seed == 0) seed = IntSeedFromDateTime();
 
             vals = new List<int>();
-
-            // Lehmer current
-            int lCurr = seed;  
+            if (seed == 0) seed = 1;
+            int lCurr = seed;  // Lehmer current
 
             // init using Lehmer algorithm
-            for (int i = 0; i < k + 1; ++i)
+            for (int i = 0; i < k + 1; ++i)  // [0 .. 10]
             {
-                int t = (a) - (r);
+                int hi = lCurr / q;  // prevent overflow
+                int lo = lCurr % q;
+                int t = (a * lo) - (r * hi);
+
                 if (t > 0)
                     lCurr = t;
                 else
                     lCurr = t + m;
 
                 vals.Add(lCurr);
-            }
+            } // init
+
         }
         public override double NextDouble()
         {

@@ -7,19 +7,13 @@ using System.Threading.Tasks;
 
 namespace MathMonteCarlo.MonteCarlo.Model
 {
-    internal class PoissonGoal
+    internal class PoissonGoalExt
     {
-        public ClubCombination Combi { get; set; }
-        public PoissonGoal(ClubCombination comb)
-        {
-            Combi = comb;
-        }
-
         /// <summary>
         /// PoissonGoal class for calculating using the average goal odds and Poisson method.
         /// </summary>
         /// <returns></returns>
-        public SoccerResult Calculate()
+        public SoccerResult Calculate(ClubCombination Combi)
         {
 
             //Get all our odds

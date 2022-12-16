@@ -32,6 +32,7 @@ namespace MathMonteCarlo.Numbers
             Next = Next % M;
             Next = Math.Abs(Next);
             Current = Next;
+            return (Next / M);
         }
     }
 }

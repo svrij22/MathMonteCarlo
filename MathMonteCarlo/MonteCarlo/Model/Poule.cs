@@ -52,12 +52,12 @@ namespace MathMonteCarlo.MonteCarlo.Model
         /// <summary>
         /// Debugging
         /// </summary>
-        public void PrintResults(int DEBUG_runIndex)
+        public void PrintResults(string DEBUG_name)
         {
             //Log block
-            MCViewModel.Log($"Individual Game Results ({DEBUG_runIndex})", $"-------------");
+            MCViewModel.Log($"Individual Game Results ({DEBUG_name})", $"-------------");
             foreach (var club in pointResults.OrderBy(b => -b.Value))
-                MCViewModel.Log($"Individual Game Results ({DEBUG_runIndex})", $"{club.Key} has {club.Value} points.");
+                MCViewModel.Log($"Individual Game Results ({DEBUG_name})", $"{club.Key} has {club.Value} points.");
         }
     }
 }

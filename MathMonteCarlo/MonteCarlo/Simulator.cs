@@ -116,7 +116,8 @@ namespace MathMonteCarlo.MonteCarlo
             MCViewModel.Log($"Individual Game Results ({DEBUG_name})", $"Ran {amountOfSimulations} game simulations");
 
             //Log individual results
-
+            foreach (var poule in PlayedPoules)
+                poule.PrintResults(DEBUG_name);
 
             //lambda func to calculate percentage of certain position in list of position string
             // e.g. 23x times Position.First in List<Position> with 100 Positions will return 23%

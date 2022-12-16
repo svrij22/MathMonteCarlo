@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MathMonteCarlo.Numbers.Generators
 {
-    internal class TauswortheGenerator
+    //Kijk in slides
+    internal class MersenneTwisterGenerator
     {
     }
 }

@@ -33,7 +33,7 @@ namespace MathMonteCarlo.Numbers
         }
         public static void TestMersTwist()
         {
-            Test<MersenneTwisterGenerator>(new MersenneTwisterGenerator());
+            Test<MersenneTwisterNumberGenerator>(new MersenneTwisterNumberGenerator());
         }
 
         public static void Test<T>(NumberGenerator numberGenerator)

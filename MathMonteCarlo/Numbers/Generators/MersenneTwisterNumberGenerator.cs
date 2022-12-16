@@ -8,34 +8,57 @@ using System.Threading.Tasks;
 namespace MathMonteCarlo.Numbers.Generators
 {
     //Kijk in slides
-    internal class MersenneTwisterGenerator : NumberGenerator
+    //Simpele implementatie maar werkt wel
+    //wat doet f?
+    internal class MersenneTwisterNumberGenerator : NumberGenerator
     {
-        public int u = 4;
-        public int s = 4;
-        public int t = 4;
-        public int l = 4;
 
+        //shifting params
+        public int u = 2;
+        public int s = 3;
+        public int t = 2;
+        public int l = 1;
+
+        //masks
         public int b = 0b_1011_0110_1011_0110;
         public int c = 0b_0011_0111_0001_1000;
 
+        //amount of bits
         public int bits = 16;
 
+        //max integer size
         public int mod;
-        public MersenneTwisterGenerator()
+        public MersenneTwisterNumberGenerator(int seed = 0)
         {
+            //Get seed
+            if (seed == 0) seed = IntSeedFromDateTime();
+
+            //Generate
+            genseed(seed);
+
+            //init max integer size
             mod = (int)Math.Pow(2, bits);
         }
 
-        public int n = 5; //amount of items
+        //amount of items
+        public int n = 32; 
 
-        public List<int> MT = new()
+        //seed array
+        public List<int> MT = new();
+
+        //magic number f ???
+        int f = 1812433253;
+
+        //generate initial numbers
+        public void genseed(int seed)
         {
-            0b_1101_0101_1111_1111,
-            0b_0111_1011_0110_0110,
-            0b_0110_1011_0110_0110,
-            0b_1111_0101_1100_1011,
-            0b_1100_1100_1100_0110,
-        };
+            MT.Add(seed);
+            for (int i = 1; i < n; i++)
+            {
+                var temp = f * (MT[i - 1] ^ (MT[i - 1] >> (n - 2))) + i;
+                MT.Add((int)(temp & 0xffffffff));
+            }
+        }
         public int genran()
         {
             //generate y and new x
@@ -92,7 +115,7 @@ namespace MathMonteCarlo.Numbers.Generators
             //for each mt number
             for (int i = 0; i < n; i++)
             {
-                //new x
+                //TWIST
                 var x = (MT[i] & upper_mask) + MT[(i + 1) % n] & lower_mask;
 
                 //shift
@@ -105,6 +128,8 @@ namespace MathMonteCarlo.Numbers.Generators
                 //set
                 MT[i] = (int)(MT[(i + m) % n] ^ xA);
             }
+
+            //reset index
             index = 0;
         }
     }

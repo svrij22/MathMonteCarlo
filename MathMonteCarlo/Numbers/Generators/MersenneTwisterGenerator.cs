@@ -10,10 +10,10 @@ namespace MathMonteCarlo.Numbers.Generators
     //Kijk in slides
     internal class MersenneTwisterGenerator : NumberGenerator
     {
-        public int u = 3;
-        public int s = 2;
-        public int t = 3;
-        public int l = 2;
+        public int u = 1;
+        public int s = 1;
+        public int t = 1;
+        public int l = 1;
 
         public int b = 0b_1011_0110_1011_0110;
         public int c = 0b_0011_0111_0001_1000;

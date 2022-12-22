@@ -16,7 +16,7 @@ namespace MathMonteCarlo.Numbers
         /// <param name="weighs"></param>
         /// <returns></returns>
         
-        public static CongruentualNumberGenerator generator = new CongruentualNumberGenerator();
+        public static CongruentialNumberGenerator generator = new CongruentialNumberGenerator();
         public static int GetInt(double[] weighs)
         {
             //Get rand and sum

@@ -10,7 +10,7 @@ namespace MathMonteCarlo.Numbers
     internal class PoissonMath
     {
 
-        public static CongruentualNumberGenerator RandomNumberGen = new CongruentualNumberGenerator();
+        public static CongruentialNumberGenerator RandomNumberGen = new CongruentialNumberGenerator();
 
         /// <summary>
         /// Poisson method

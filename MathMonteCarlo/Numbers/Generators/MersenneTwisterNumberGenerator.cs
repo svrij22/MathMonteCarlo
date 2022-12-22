@@ -79,29 +79,20 @@ namespace MathMonteCarlo.Numbers.Generators
         public int extract_number()
         {
             if (index >= n-1)
-            {
                 twist();
-            }
 
             int _y = MT[index];
 
             //bitwise shifting for extracted number
 
             _y = _y ^ (_y >> u);
-            _y = _y % mod;
-
             _y = _y ^ ((_y << s) & b);
-            _y = _y % mod;
-
             _y = _y ^ ((_y << t) & c);
-            _y = _y % mod;
-
             _y = _y ^ (_y >> l);
-            _y = _y % mod;
 
             index++;
 
-            return _y;
+            return _y % mod;
         }
 
         uint a = 0x9908B0DF;

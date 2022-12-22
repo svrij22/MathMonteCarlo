@@ -14,7 +14,7 @@
 
         <Border BorderBrush="Black" BorderThickness="1" Margin="6" Opacity=".8"/>
         <ScrollViewer HorizontalScrollBarVisibility="Hidden" Margin="10">
-            <TextBlock Text="{Binding SelectedOutput}" />
+            <TextBox Text="{Binding SelectedOutput}" IsReadOnly="True" />
         </ScrollViewer>
 
         <ComboBox ItemsSource="{Binding Titles}" SelectedIndex="{Binding SelectedIndex}" Grid.Row="1"/>

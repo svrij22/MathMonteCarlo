@@ -35,11 +35,7 @@ namespace MathMonteCarlo.Numbers
                 int hi = lCurr / q;  // prevent overflow
                 int lo = lCurr % q;
                 int t = (a * lo) - (r * hi);
-
-                if (t > 0)
-                    lCurr = t;
-                else
-                    lCurr = t + m;
+                lCurr = Math.Abs(t);
 
                 vals.Add(lCurr);
             } // init

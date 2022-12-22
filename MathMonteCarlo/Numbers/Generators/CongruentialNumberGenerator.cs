@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace MathMonteCarlo.Numbers
 {
-    internal class CongruentualNumberGenerator : NumberGenerator
+    internal class CongruentialNumberGenerator : NumberGenerator
     {
         public double A;
         public double C;
         public double M;
 
         public double Current;
-        public CongruentualNumberGenerator(long seed = 0)
+        public CongruentialNumberGenerator(long seed = 0)
         {
             if (seed == 0) seed = LongSeedFromDateTime();
             A = (seed / 10); 
